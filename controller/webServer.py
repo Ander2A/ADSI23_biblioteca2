@@ -1,10 +1,12 @@
 from .LibraryController import LibraryController
+from .ErreseinaController import ErreseinaController
 from flask import Flask, render_template, request, make_response, redirect
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
 
 library = LibraryController()
+erreseinak = ErreseinaController()
 
 
 @app.before_request
@@ -73,3 +75,99 @@ def logout():
 		request.user.delete_session(request.user.token)
 		request.user = None
 	return resp
+	
+@app.route('/erreseina_idatzi')
+def jadaMailegatuZuen():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	if library.jadaMailegatuZuen(eraId, libId):
+		return render_template('erreseina.html', eraId=eraId, libId=libId, data="", nota="", iruzkina="")
+	else:
+		return None
+		
+@app.route('/mailegatu')	
+def erreseinaSortu():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	data = request.values.get("data")
+	nota = request.values.get("nota")
+	iruzkina = request.values.get("iruzkina")
+	if library.jadaMailegatuZuen(eraId, libId):
+		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
+		return render_template('mailegatu.html', eraId=eraId, libId=libId)
+	else:
+		return None
+		
+@app.route('/erreseina_idatzi')
+def jadaErreseinaZuen():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	if library.jadaMailegatuZuen(eraId, libId):
+		if erreseinak.jadaErreseinaZuen(eraId, libId):
+			#Conseguir datos de la erreseina
+			return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
+		else:
+			return None
+	else:
+		return None
+
+@app.route('/mailegatu')		
+def erreseinaEditatu():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	data = request.values.get("data")
+	nota = request.values.get("nota")
+	iruzkina = request.values.get("iruzkina")
+	if library.jadaMailegatuZuen(eraId, libId):
+		if erreseinak.jadaErreseinaZuen(eraId, libId):
+			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
+			return render_template('mailegatu.html', eraId=eraId, libId=libId)
+		else:
+			return None
+	else:
+			return None
+			
+			
+
+@app.route('/liburuko_erreseina_katalogoa')
+def liburuko_erreseina_katalogoa():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	page = int(request.values.get("page", 1))
+	erreseinak, nb_erreseinak = erreseinak.search_erreseinak(eraId=eraId, libId=libId, page=page - 1)
+	total_pages = (nb_books // 6) + 1
+	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
+	                       total_pages=total_pages, max=max, min=min)
+
+
+
+@app.route('/admin')      
+def admin():
+	return render_template('admin.html')
+	
+
+@app.route('/liburuaGehitu')      
+def liburuaGehitu():
+	return render_template('liburuaGehitu.html')
+	                
+	                
+	                
+@app.route('/liburuaEzabatu')      
+def liburuaEzabatu():
+	return render_template('liburuaEzabatu.html')
+	
+@app.route('/erabiltzaileaGehitu')      
+def erabiltzaileaGehitu():
+	return render_template('erabiltzaileaGehitu.html')	                
+@app.route('/erabiltzaileaEzabatu')      
+def erabiltzaileaEzabatu():
+	return render_template('erabiltzaileaEzabatu.html')	                	                
+	                
+	                
+	                
+	                
+	                
+	                
+	                
+	                
+	                
