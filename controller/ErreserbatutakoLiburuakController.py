@@ -14,5 +14,5 @@ class ErreserbatutakoLiburuakController:
 	def bueltatu_liburua(self, izena, idazlea, data):
 
 
-	def erreserbatu_liburua(self, izzena, idazlea, data):
+	def erreserbatu_liburua(self, izena, idazlea, data):
 

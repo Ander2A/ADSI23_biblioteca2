@@ -183,7 +183,10 @@ def erabiltzaileaEzabatu():
 	                
 	                
 	                
-	                
+@app.route('/liburuGomendioak')      
+def liburuGomendioak():
+	title = request.values.get("title", "")
+	return render_template('liburuGomendioak.html', title=title)	                
 	                
 	                
 	                
