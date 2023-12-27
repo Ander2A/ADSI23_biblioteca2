@@ -1,5 +1,6 @@
 from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
+from .ErabiltzaileController import ErabiltzaileController
 from flask import Flask, render_template, request, make_response, redirect
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
@@ -7,7 +8,7 @@ app = Flask(__name__, static_url_path='', static_folder='../view/static', templa
 
 library = LibraryController()
 erreseinak = ErreseinaController()
-
+erabiltzaileak = ErabiltzaileController()
 
 @app.before_request
 def get_logged_user():
@@ -146,15 +147,31 @@ def admin():
 	return render_template('admin.html')
 	
 
+
+	
+
 @app.route('/liburuaGehitu')      
 def liburuaGehitu():
-	return render_template('liburuaGehitu.html')
+	libId = request.values.get('id')
+	izenburua = request.values.get('titulo')
+	autorea = request.values.get('autor')
+	azala = request.values.get("azala")
+	deskribapena = request.values.get('cover')
+	if library.liburuaGehitutaZegoen(libId):
+		return render_template('liburuaGehitutaZegoen.html', libId=libId)
+	else:
+		return render_template('liburuaGehitu.html', libId=libId, izenburua=izenburua, autorea=autorea, azala=azala, deskribapena=deskribapena)
+	
 	                
 	                
 	                
 @app.route('/liburuaEzabatu')      
 def liburuaEzabatu():
-	return render_template('liburuaEzabatu.html')
+	libId = request.values.get("libId")
+	if library.liburuaGehitutaZegoen(libId):
+		return render_template('liburuaEzabatu.html')
+	else:
+		return render_template('liburuaEzDago.html')
 	
 @app.route('/erabiltzaileaGehitu')      
 def erabiltzaileaGehitu():
