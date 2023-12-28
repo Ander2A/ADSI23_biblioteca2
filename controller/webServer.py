@@ -194,7 +194,23 @@ def erabiltzaileaEzabatu():
 @app.route('/liburuGomendioak')      
 def liburuGomendioak():
 	title = request.values.get("title", "")
-	return render_template('liburuGomendioak.html', title=title)	                
+	author = request.values.get("author", "")
+	page_lagunak = int(request.values.get("page_lagunak", 1))
+	page_zure_lib = int(request.values.get("page_zure_lib", 1))
+	
+	books_lagunak, nb_books_lagunak = library.search_books(title=title, author=author, page=page_lagunak - 1)
+	total_pages_lagunak = (nb_books_lagunak // 6) + 1
+	
+	books_zure_lib, nb_books_zure_lib = library.search_books(title=title, author=author, page=page_zure_lib - 1)
+	total_pages_zure_lib = (nb_books_zure_lib // 6) + 1
+	
+	return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
+				books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
+				title=title, author=author, max=max, min=min)
+	
+	#para hacer el de lagunak tengo que coger los libros que han leido los amigos y que yo no haya leido
+	#para hacer el de nire lib tengo que coger los libros de autores de los libros que he leido
+	#preguntar a ver como puedo hacer una lista de libros
 	                
 	                
 	                
