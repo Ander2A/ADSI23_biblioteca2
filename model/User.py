@@ -57,7 +57,7 @@ class User:
 		
 	
 	def get_irakurritako_liburuak(self):
-		books_read = db.select("SELECT * FROM ErreserbenHistoriala")
+		books_read = db.select("SELECT * FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
 		print("User ID:", self.id)
 		books = [
 			Book(b[0],b[1],b[2],b[3],b[4])
