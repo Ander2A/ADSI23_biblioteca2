@@ -110,23 +110,37 @@ for author, title, cover, description in libros:
 
 ### Insert lagunak
 
-cur.execute("INSERT INTO Lagunak VALUES (0, 1)")
-cur.execute("INSERT INTO Lagunak VALUES (0, 2)")
-cur.execute("INSERT INTO Lagunak VALUES (0, 3)")
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4))
+con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
+con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
+con.commit()
 
 ### Insert Erreserben Historiala
 
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 1)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 2)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 3)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 4)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (1, 1)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (2, 1)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (3, 2)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (1, 2)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (1, 3)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 6)")
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (0, 8)")
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 2))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 3))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 4))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
+con.commit()
 
 
 

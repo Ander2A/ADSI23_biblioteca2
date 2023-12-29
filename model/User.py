@@ -1,6 +1,7 @@
 import datetime
 from .Connection import Connection
 from .tools import hash_password
+from model import Book
 
 db = Connection()
 
@@ -53,21 +54,26 @@ class User:
 		return [topic[0] for topic in topics]
 		
 	def get_lagunen_zerrenda(self):
-		return True
+		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))
+		lagun_zerrenda = [
+			User(b[0],b[1],b[2],b[3],b[4])
+			for b in lagunak
+		]
+		print(self.id)
+		print(len(db.select("SELECT * FROM  Lagunak")))
+		print(len(lagun_zerrenda))
+		for user in lagun_zerrenda:
+        		print(f"User ID: {user.id}, Name: {user.name}, Email: {user.email}, Password: {user.password}, Admin: {user.admin}")
+		return lagun_zerrenda
 		
 	
 	def get_irakurritako_liburuak(self):
-		books_read = db.select("SELECT * FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
-		print("User ID:", self.id)
+		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
 		books = [
 			Book(b[0],b[1],b[2],b[3],b[4])
 			for b in books_read
 		]
-		print(len(books_read))
-		if len(books_read) > 0:
-			print("AAAAAAAAAAAAAAAAAAAAAAAAA")
-		else:
-			print("EEEEEEEEEEEEEEEEEEEEEEEEEE")
+		self.get_lagunen_zerrenda()
 		return books
 
 
