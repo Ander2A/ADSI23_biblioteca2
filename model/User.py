@@ -56,14 +56,9 @@ class User:
 	def get_lagunen_zerrenda(self):
 		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))
 		lagun_zerrenda = [
-			User(b[0],b[1],b[2],b[3],b[4])
+			User(b[0],b[1],b[2],b[4])
 			for b in lagunak
 		]
-		print(self.id)
-		print(len(db.select("SELECT * FROM  Lagunak")))
-		print(len(lagun_zerrenda))
-		for user in lagun_zerrenda:
-        		print(f"User ID: {user.id}, Name: {user.name}, Email: {user.email}, Password: {user.password}, Admin: {user.admin}")
 		return lagun_zerrenda
 		
 	
@@ -73,7 +68,6 @@ class User:
 			Book(b[0],b[1],b[2],b[3],b[4])
 			for b in books_read
 		]
-		self.get_lagunen_zerrenda()
 		return books
 
 
