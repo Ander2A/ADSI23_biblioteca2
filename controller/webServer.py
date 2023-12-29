@@ -200,8 +200,42 @@ def liburuGomendioak():
 	page_lagunak = int(request.values.get("page_lagunak", 1))
 	page_zure_lib = int(request.values.get("page_zure_lib", 1))
 	
-	books_lagunak = request.user.get_irakurritako_liburuak()#library.search_books(title=title, author=author, page=page_lagunak - 1), nb_books_lagunak
-	total_pages_lagunak =  1#(nb_books_lagunak // 6) + 1
+	#books_lagunak = request.user.get_irakurritako_liburuak()#library.search_books(title=title, author=author, page=page_lagunak - 1), nb_books_lagunak
+	#total_pages_lagunak =  1#(nb_books_lagunak // 6) + 1
+	
+	
+	lagun_zerrenda = request.user.get_lagunen_zerrenda()
+	print(len(lagun_zerrenda))
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	for book in irakurritako_liburuak:
+			print(book.title)
+	print(len(irakurritako_liburuak))
+	gomendatutako_liburuak = []
+	for User in lagun_zerrenda:
+		lista = User.get_irakurritako_liburuak()
+		for book in lista:
+			print(book.title)
+		gomendatutako_liburuak = [
+			book
+			for book in lista 
+			if book not in irakurritako_liburuak and 
+			book not in gomendatutako_liburuak
+		]
+	total_pages_lagunak = (len(gomendatutako_liburuak)//6) +1
+	books_lagunak = gomendatutako_liburuak
+	for book in books_lagunak:
+			print(book.title)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	books_zure_lib, nb_books_zure_lib = library.search_books(title=title, author=author, page=page_zure_lib - 1)
 	total_pages_zure_lib = (nb_books_zure_lib // 6) + 1
