@@ -200,53 +200,39 @@ def liburuGomendioak():
 	page_lagunak = int(request.values.get("page_lagunak", 1))
 	page_zure_lib = int(request.values.get("page_zure_lib", 1))
 	
-	#books_lagunak = request.user.get_irakurritako_liburuak()#library.search_books(title=title, author=author, page=page_lagunak - 1), nb_books_lagunak
-	#total_pages_lagunak =  1#(nb_books_lagunak // 6) + 1
-	
-	
+	#Lagunak irakurritakoaren araberako gomendioak
 	lagun_zerrenda = request.user.get_lagunen_zerrenda()
-	print(len(lagun_zerrenda))
 	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
-	for book in irakurritako_liburuak:
-			print(book.title)
-	print(len(irakurritako_liburuak))
-	gomendatutako_liburuak = []
+	gomendatutako_liburuak_lagunak = []
 	for User in lagun_zerrenda:
-		lista = User.get_irakurritako_liburuak()
-		for book in lista:
-			print(book.title)
-		gomendatutako_liburuak = [
+		lista = User.get_irakurritako_liburuak(title,author)
+		gomendatutako_liburuak_lagunak.extend(
 			book
 			for book in lista 
 			if book not in irakurritako_liburuak and 
+			book not in gomendatutako_liburuak_lagunak
+		)
+	total_pages_lagunak = (len(gomendatutako_liburuak_lagunak)//6) +1
+	books_lagunak = gomendatutako_liburuak_lagunak
+	
+	#Erabiltzailearen irakurritakoaren araberako gomendioak
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	gomendatutako_liburuak = []
+	for book in irakurritako_liburuak:
+		autorearen_liburuak = library.get_autore_baten_liburuak(book.author,author,title)
+		gomendatutako_liburuak.extend(
+			book
+			for book in autorearen_liburuak 
+			if book not in irakurritako_liburuak and 
 			book not in gomendatutako_liburuak
-		]
-	total_pages_lagunak = (len(gomendatutako_liburuak)//6) +1
-	books_lagunak = gomendatutako_liburuak
-	for book in books_lagunak:
-			print(book.title)
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	books_zure_lib, nb_books_zure_lib = library.search_books(title=title, author=author, page=page_zure_lib - 1)
-	total_pages_zure_lib = (nb_books_zure_lib // 6) + 1
+		)
+	books_zure_lib = gomendatutako_liburuak
+	total_pages_zure_lib = (len(gomendatutako_liburuak)//6) + 1
 	
 	return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
 				books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
 				title=title, author=author, max=max, min=min)
 	
-	#para hacer el de lagunak tengo que coger los libros que han leido los amigos y que yo no haya leido
-	#para hacer el de nire lib tengo que coger los libros de autores de los libros que he leido
-	                
 	                
 	                
 	                
