@@ -8,7 +8,6 @@ class TestLiburuGomendioak(BaseTestClass):
 		self.assertEqual(302, res.status_code)
 		self.assertEqual('/', res.location)
 
-
 	def test_sartu_ondo(self):
 		self.login('james@gmail.com', '123456')
 		res = self.client.get('/liburuGomendioak')
@@ -86,7 +85,5 @@ class TestLiburuGomendioak(BaseTestClass):
 		self.assertGreater(len(cards), 0)
 		for card in cards:
 			self.assertIn(params['title'].lower(), card.find(class_='card-title').get_text().lower())
-
-
-
-
+			
+			
