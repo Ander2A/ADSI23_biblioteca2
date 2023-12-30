@@ -116,6 +116,8 @@ cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
 con.commit()
 cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
 con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
+con.commit()
 
 ### Insert Erreserben Historiala
 
